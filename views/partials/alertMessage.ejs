@@ -1,0 +1,21 @@
+<!-- alert -->
+<% if(alert.message != "") { %>
+<div class="alert alert-<%= alert.status %>" role="alert">
+  <%= alert.message %>
+  <button
+    type="button"
+    style="padding: 0"
+    class="btn float-right text-danger"
+    onclick="removeAlert()"
+  >
+    <b>X</b>
+  </button>
+</div>
+<% } %>
+
+<script>
+  function removeAlert() {
+    var alert = document.getElementsByClassName("alert");
+    alert[0].remove();
+  }
+</script>
