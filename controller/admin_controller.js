@@ -19,9 +19,10 @@ module.exports = {
         alert,
         title: "Staycation | Category",
       });
-    } catch (error) {}
-    res.redirect("/admin/category");
-    console.log(error);
+    } catch (error) {
+      res.redirect("/admin/category");
+      console.log(error);
+    }
   },
   addCategory: async (req, res) => {
     try {
