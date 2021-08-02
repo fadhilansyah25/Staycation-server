@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Item = require("./Item");
 const { ObjectId } = mongoose.Schema;
 
 const categorySchema = new mongoose.Schema({
@@ -8,7 +9,7 @@ const categorySchema = new mongoose.Schema({
   },
   itemId: [{
     type: ObjectId,
-    ref: "Item"
+    ref: Item
   }]
 });
 

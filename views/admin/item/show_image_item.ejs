@@ -1,0 +1,28 @@
+<div
+  class="tab-pane fade show active"
+  id="show-image"
+  role="tabpanel"
+  aria-labelledby="home-tab"
+>
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4 mt-2">
+    <div class="card-body">
+      <div class="row text-center text-lg-start">
+        <% item["imageId"].forEach(image => { %>
+        <div class="col-lg-3 col-md-4 col-6">
+          <a href="#" class="d-block mb-4 h-100">
+            <img
+              src="http://localhost:3000/<%= image.imageUrl %> "
+              class="img-fluid thumbnail"
+              alt="..."
+            />
+          </a>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+  <a href="/admin/item" class="btn btn-warning btn-icon-split btn-sm"
+    ><span class="icon"><i class="fas fa-arrow-left"></i></span><span class="text"> Back </span></a
+  >
+</div>

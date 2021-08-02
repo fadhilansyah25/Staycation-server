@@ -26,22 +26,22 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  cateryId: {
+  categoryId: {
     type: ObjectId,
     ref: "Category",
   },
-  imageId: {
+  imageId: [{
     type: ObjectId,
     ref: "Image",
-  },
-  featureId: {
+  }],
+  featureId: [{
     type: ObjectId,
     ref: "Feature",
-  },
-  activityId: {
+  }],
+  activityId: [{
     type: ObjectId,
     ref: "Activity",
-  },
+  }],
 });
 
 module.exports = mongoose.model("Item", itemSchema);

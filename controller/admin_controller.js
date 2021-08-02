@@ -1,7 +1,11 @@
 const Category = require("../models/Category");
 const Bank = require("../models/Bank");
-const fs = require('fs-extra');
-const path = require('path')
+const Item = require("../models/Item");
+const Image = require("../models/Image");
+
+const fs = require("fs-extra");
+const path = require("path");
+const { Console } = require("console");
 
 module.exports = {
   viewDashboard: (req, res) => {
@@ -70,6 +74,7 @@ module.exports = {
     }
   },
 
+  // Bank controller
   viewBank: async (req, res) => {
     try {
       const bank = await Bank.find();
@@ -125,7 +130,7 @@ module.exports = {
           namebank: BankName,
           accountNumber: AccountNumber,
           name: AccountName,
-          imageUrl: `images/${req.file.filename}`
+          imageUrl: `images/${req.file.filename}`,
         });
         await bank.save();
         req.flash("alertMessage", "Succesful Edit Bank");
@@ -133,21 +138,21 @@ module.exports = {
         res.redirect("/admin/bank");
       }
     } catch (error) {
-      console.log(req.body)
+      console.log(req.body);
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/admin/bank");
     }
   },
   deleteBank: async (req, res) => {
-    try { 
+    try {
       const { id } = req.params;
-      const bank = await Bank.findOne({_id: id});
+      const bank = await Bank.findOne({ _id: id });
       await fs.unlink(path.join(`public/${bank.imageUrl}`));
       await bank.remove();
       req.flash("alertMessage", "Succesful Delete Bank");
       req.flash("alertStatus", "success");
-      res.redirect("/admin/bank")
+      res.redirect("/admin/bank");
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");
@@ -155,9 +160,191 @@ module.exports = {
     }
   },
 
-  viewitem: (req, res) => {
-    res.render("admin/item/view_item.ejs", { title: "Staycation | Item" });
+  // Item controller
+  viewItem: async (req, res) => {
+    try {
+      const categories = await Category.find();
+      const items = await Item.find()
+        .populate({
+          path: "imageId",
+          select: "id imageUrl",
+        })
+        .populate({ path: "categoryId", select: "id name" });
+      const alertMessage = req.flash("alertMessage");
+      const alertStatus = req.flash("alertStatus");
+      const alert = { message: alertMessage, status: alertStatus };
+      res.render("admin/item/view_item.ejs", {
+        categories,
+        items,
+        alert,
+        action: "view",
+        title: "Staycation | Item",
+      });
+    } catch (error) {
+      req.flash("alertMessage", `${error.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/admin/item");
+    }
   },
+  addItem: async (req, res) => {
+    try {
+      const { categoryId, title, price, city, description } = req.body;
+      if (req.files.length > 0) {
+        const category = await Category.findOne({ _id: categoryId });
+        const newItem = {
+          categoryId: category._id,
+          title,
+          price,
+          description,
+          city,
+        };
+        const item = await Item.create(newItem);
+        category.itemId.push({ _id: item._id });
+        await category.save();
+        for (let i = 0; i < req.files.length; i++) {
+          const imageSave = await Image.create({
+            imageUrl: `images/${req.files[i].filename}`,
+          });
+          item.imageId.push({ _id: imageSave._id });
+          await item.save();
+        }
+        req.flash("alertMessage", "Succesful Add Item");
+        req.flash("alertStatus", "success");
+        res.redirect("/admin/item");
+      }
+    } catch (error) {
+      req.flash("alertMessage", `${error.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/admin/item");
+    }
+  },
+  showImageItem: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const item = await Item.findOne({ _id: id })
+        .populate({
+          path: "imageId",
+          select: "id imageUrl",
+        })
+        .populate({ path: "categoryId", select: "id name" });
+      const alertMessage = req.flash("alertMessage");
+      const alertStatus = req.flash("alertStatus");
+      const alert = { message: alertMessage, status: alertStatus };
+      res.render("admin/item/view_item.ejs", {
+        item,
+        alert,
+        action: "show image",
+        title: "Staycation | Show Image Item",
+      });
+    } catch (error) {
+      req.flash("alertMessage", `${error.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/admin/item");
+    }
+  },
+  showEditItem: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const item = await Item.findOne({ _id: id })
+        .populate({
+          path: "imageId",
+          select: "id imageUrl",
+        })
+        .populate({ path: "categoryId", select: "id name" });
+      const categories = await Category.find();
+      const alertMessage = req.flash("alertMessage");
+      const alertStatus = req.flash("alertStatus");
+      const alert = { message: alertMessage, status: alertStatus };
+      res.render("admin/item/view_item.ejs", {
+        categories,
+        item,
+        alert,
+        action: "edit",
+        title: "Staycation | Edit Item",
+      });
+    } catch (error) {
+      req.flash("alertMessage", `${error.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/admin/item");
+    }
+  },
+  editItem: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { categoryId, title, price, city, description } = req.body;
+      const item = await Item.findOne({ _id: id })
+        .populate({
+          path: "imageId",
+          select: "id imageUrl",
+        })
+        .populate({ path: "categoryId", select: "id name" });
+      if (req.files.length > 0) {
+        for (let i = 0; i < item.imageId.length; i++) {
+          const imageUpdate = await Image.findOne({ _id: item.imageId[i]._id });
+          await fs.unlink(path.join(`public/${imageUpdate.imageUrl}`));
+          imageUpdate.imageUrl = `images/${req.files[i].filename}`;
+          await imageUpdate.save();
+          Object.assign(item, {
+            title,
+            price,
+            city,
+            description,
+            categoryId,
+          });
+          await item.save();
+          req.flash("alertMessage", "Succesful Update Item");
+          req.flash("alertStatus", "success");
+          res.redirect("/admin/item");
+        }
+      } else {
+        Object.assign(item, {
+          title,
+          price,
+          city,
+          description,
+          categoryId,
+        });
+        await item.save();
+        req.flash("alertMessage", "Succesful Update Item");
+        req.flash("alertStatus", "success");
+        res.redirect("/admin/item");
+      }
+    } catch (error) {
+      req.flash("alertMessage", `${error.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/admin/item");
+    }
+  },
+  deleteItem: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const item = await Item.findOne({ _id: id }).populate("imageId");
+      const category = await Category.findOne({_id: item.categoryId});
+      for (let i = 0; i < item.imageId.length; i++) {
+        Image.findOne({ _id: item.imageId[i]._id })
+          .then((image) => {
+            fs.unlink(path.join(`public/${image.imageUrl}`));
+            image.remove();
+          })
+          .catch((error) => {
+            req.flash("alertMessage", `${error.message}`);
+            req.flash("alertStatus", "danger");
+            res.redirect("/admin/item");
+          });
+      }
+      await item.remove();
+      category.itemId.pop({ _id: item._id });
+      await category.save();
+      req.flash("alertMessage", "Succesful Delete Item");
+      req.flash("alertStatus", "success");
+      res.redirect("/admin/item");
+    } catch (error) {
+      req.flash("alertMessage", `${error.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/admin/item");
+    }
+  },
+
   viewBooking: (req, res) => {
     res.render("admin/booking/view_booking.ejs", {
       title: "Staycation | Booking",

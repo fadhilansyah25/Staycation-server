@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Item = require("./Item");
 const { ObjectId } = mongoose.Schema;
 
 const featureSchema = new mongoose.Schema({
@@ -16,7 +17,7 @@ const featureSchema = new mongoose.Schema({
   },
   itemId: {
     type: ObjectId,
-    ref: "Item",
+    ref: Item,
   }
 });
 
