@@ -25,6 +25,12 @@ router.get("/item/edit-item/:id", adminController.showEditItem);
 router.put("/item/:id", uploadMultiple, adminController.editItem);
 router.delete("/item/:id/delete", adminController.deleteItem);
 
+// end point detail item
+router.get("/item/show-detail-item/:itemId", adminController.viewDetailItem);
+router.post("/item/feature/add", upload, adminController.addFeatureItem);
+router.put("/item/feature/edit", upload, adminController.editFeatureItem);
+router.delete("/item/feature/delete/:id", adminController.deleteFeatureItem);
+
 router.get("/booking", adminController.viewBooking);
 
 module.exports = router;

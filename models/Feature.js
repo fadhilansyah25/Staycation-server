@@ -7,7 +7,7 @@ const featureSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  qty: {
+  quantity: {
     type: Number,
     required: true,
   },
