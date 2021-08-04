@@ -20,9 +20,8 @@
               <label for="name">Name</label>
               <input
                 type="text"
-                class="form-control name"
+                class="form-control name-feature"
                 name="name"
-                id="name"
                 placeholder="Enter Feature Name"
                 required
               />
@@ -45,8 +44,8 @@
             <input type="hidden" value="<%= itemId %>" name="itemId" class="itemId"/>
             <input type="hidden" name="featureId" class="featureId">
             <div class="form-group">
-                <input type="submit" class="btn btn-primary save-edit" value="save"></input>
-                <input type="reset" class="btn btn-danger reset" value="Reset">
+                <input type="submit" class="btn btn-primary save-edit-feature" value="save"></input>
+                <input type="reset" class="btn btn-danger reset-feature" value="Reset">
             </div>
           </form>
         </div>
@@ -89,7 +88,7 @@
                       <a
                         href="javascript:void(0)"
                         type="button"
-                        class="btn btn-warning btn-circle btn-sm button-update"
+                        class="btn btn-warning btn-circle btn-sm button-update-feature"
                         data-id="<%= feature.id %>"
                         data-name="<%= feature.name %>"
                         data-quantity="<%= feature.quantity %>"

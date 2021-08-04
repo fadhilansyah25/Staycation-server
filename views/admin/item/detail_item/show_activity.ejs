@@ -12,15 +12,16 @@
         <div class="col-md-5">
           <!-- Modal -->
           <form
-            action="/admin/bank"
+            action="http://localhost:3000/admin/item/activity/add"
             method="POST"
+            id="form-activity"
             enctype="multipart/form-data"
           >
             <div class="form-group">
               <label for="name">Name</label>
               <input
                 type="text"
-                class="form-control"
+                class="form-control name-activity"
                 name="name"
                 placeholder="Name Activity"
                 required
@@ -30,7 +31,7 @@
               <label for="type">Type</label>
               <input
                 type="text"
-                class="form-control"
+                class="form-control type"
                 name="type"
                 placeholder="Type Activity"
                 required
@@ -45,8 +46,12 @@
                 placeholder="Enter image"
               />
             </div>
-            <input type="hidden" value="<%= itemId %>" name="itemId" />
-            <button type="submit" class="btn btn-primary">Add</button>
+            <input type="hidden" value="<%= itemId %>" name="itemId" class="itemId"/>
+            <input type="hidden" name="activityId" class="activityId">
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary save-edit-activity" value="save"></input>
+                <input type="reset" class="btn btn-danger reset-activity" value="Reset">
+            </div>
           </form>
         </div>
         <div class="col-md-7">
@@ -62,10 +67,52 @@
                   <th>No.</th>
                   <th>Name Activity</th>
                   <th>type</th>
+                  <th>Image</th>
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                <% activities.forEach((activity, index) => { %>
+                  <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= activity.name %></td>
+                    <td><%= activity.type %></td>
+                    <td>
+                      <img
+                        src="http://localhost:3000/<%= activity.imageUrl %>"
+                        alt=""
+                        srcset=""
+                      />
+                    </td>
+                    <td>
+                      <form
+                        action="/admin/item/activity/delete/<%= activity.id %>?_method=DELETE"
+                        method="POST"
+                        onsubmit="return confirm('Delete this item?');"
+                      >
+                        <a
+                          href="javascript:void(0)"
+                          type="button"
+                          class="btn btn-warning btn-circle btn-sm button-update-activity"
+                          data-id="<%= activity.id %>"
+                          data-name="<%= activity.name %>"
+                          data-type="<%= activity.type %>"
+                          data-imageurl="<%= activity.imageUrl %>"
+                          data-itemid="<%= activity.itemId %>"
+                        >
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <button
+                          type="submit"
+                          class="btn btn-danger btn-circle btn-sm"
+                        >
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  <% }) %>
+              </tbody>
             </table>
           </div>
         </div>

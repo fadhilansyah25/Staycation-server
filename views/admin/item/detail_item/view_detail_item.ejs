@@ -109,21 +109,38 @@
 </div>
 <%- include('../../../partials/js.ejs') %>
 <script>
-  $("#dataTable").on("click", ".button-update", function () {
+  $("#dataTable").on("click", ".button-update-feature", function () {
     let id = $(this).data("id");
     let name = $(this).data("name");
     let quantity = $(this).data("quantity");
     $(".featureId").val(id);
-    $(".name").val(name);
+    $(".name-feature").val(name);
     $(".quantity").val(quantity);
-    $(".save-edit").val("edit");
+    $(".save-edit-feature").val("edit");
     $("#form-feature").attr('action', 'http://localhost:3000/admin/item/feature/edit?_method=PUT');
   });
 
-  $(".reset").on("click", function () {
-    $(".save-edit").val("Save");
+  $(".reset-feature").on("click", function () {
+    $(".save-edit-feature").val("Save");
     $(".featureId").val("");
     $("#form-feature").attr('action', 'http://localhost:3000/admin/item/feature/add');
+  });
+
+  $("#dataTableActivity").on("click", ".button-update-activity", function () {
+    let id = $(this).data("id");
+    let name = $(this).data("name");
+    let type = $(this).data("type");
+    $(".activityId").val(id);
+    $(".name-activity").val(name);
+    $(".type").val(type);
+    $(".save-edit-activity").val("edit");
+    $("#form-activity").attr('action', 'http://localhost:3000/admin/item/activity/edit?_method=PUT');
+  });
+
+  $(".reset-activity").on("click", function () {
+    $(".save-edit-activity").val("Save");
+    $(".activityId").val("");
+    $("#form-activity").attr('action', 'http://localhost:3000/admin/item/activity/add');
   });
 </script>
 <script>
