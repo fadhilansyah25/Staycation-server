@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const Item = require("./Item");
-const { ObjectId } = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-const featureSchema = new mongoose.Schema({
+const featureSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -16,8 +15,8 @@ const featureSchema = new mongoose.Schema({
     required: true,
   },
   itemId: {
-    type: ObjectId,
-    ref: Item,
+    type: Schema.Types.ObjectId,
+    ref: 'Item',
   }
 });
 

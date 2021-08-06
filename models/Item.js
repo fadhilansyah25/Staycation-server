@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-const itemSchema = new mongoose.Schema({
+const itemSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -27,20 +27,20 @@ const itemSchema = new mongoose.Schema({
     required: true,
   },
   categoryId: {
-    type: ObjectId,
-    ref: "Category",
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
   },
   imageId: [{
-    type: ObjectId,
-    ref: "Image",
+    type: Schema.Types.ObjectId,
+    ref: 'Image',
   }],
   featureId: [{
-    type: ObjectId,
-    ref: "Feature",
+    type: Schema.Types.ObjectId,
+    ref: 'Feature',
   }],
   activityId: [{
-    type: ObjectId,
-    ref: "Activity",
+    type: Schema.Types.ObjectId,
+    ref: 'Activity',
   }],
 });
 

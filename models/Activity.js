@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const Item = require("./Item");
-const { ObjectId } = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-const activitySchema = new mongoose.Schema({
+const activitySchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -20,8 +19,8 @@ const activitySchema = new mongoose.Schema({
     default: false,
   },
   itemId: {
-    type: ObjectId,
-    ref: Item,
+    type: Schema.Types.ObjectId,
+    ref: 'Item',
   }
 });
 

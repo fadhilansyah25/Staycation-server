@@ -4,15 +4,67 @@ const Item = require("../models/Item");
 const Image = require("../models/Image");
 const Feature = require("../models/Feature");
 const Activity = require("../models/Activity");
+const Booking = require("../models/Booking");
+const Users = require("../models/Users");
+const bcrypt = require("bcryptjs");
 
 const fs = require("fs-extra");
 const path = require("path");
-const { Console } = require("console");
 
 module.exports = {
+  viewSignin: async (req, res) => {
+    try {
+      const alertMessage = req.flash("alertMessage");
+      const alertStatus = req.flash("alertStatus");
+      const alert = { message: alertMessage, status: alertStatus };
+      if (req.session.user == null || req.session.user == undefined) {
+        res.render("index.ejs", {
+          alert,
+          title: "Staycation | Log In",
+        });
+      } else {
+        res.redirect("/admin/dashboard");
+      }
+    } catch (error) {
+      res.redirect("/admin/signin");
+    }
+  },
+  actionSignin: async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      const user = await Users.findOne({username: username});
+
+      if (!user) {
+        req.flash("alertMessage", "Username Not found");
+        req.flash("alertStatus", "warning");
+        return res.redirect("/admin/signin");
+      }
+
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
+      if (!isPasswordMatch) {
+        req.flash("alertMessage", "Password Incorrect");
+        req.flash("alertStatus", "warning");
+        return res.redirect('/admin/signin');
+      }
+
+      req.session.user = {
+        id: user.id,
+        username: user.username,
+      };
+      res.redirect("/admin/dashboard");
+    } catch (error) {
+      res.redirect("/admin/signin");
+    }
+  },
+  actionLogout: (req, res) => {
+    req.session.destroy();
+    res.redirect("/admin/signin");
+  },
+
   viewDashboard: (req, res) => {
     res.render("admin/dashboard/view_dashboard.ejs", {
       title: "Staycation Dashboard",
+      userSession: req.session.user
     });
   },
 
@@ -27,6 +79,7 @@ module.exports = {
         category,
         alert,
         title: "Staycation | Category",
+        userSession: req.session.user
       });
     } catch (error) {
       res.redirect("/admin/category");
@@ -87,6 +140,7 @@ module.exports = {
         bank,
         alert,
         title: "Staycation | Bank",
+        userSession: req.session.user
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -181,6 +235,7 @@ module.exports = {
         alert,
         action: "view",
         title: "Staycation | Item",
+        userSession: req.session.user
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -237,6 +292,7 @@ module.exports = {
         alert,
         action: "show image",
         title: "Staycation | Show Image Item",
+        userSession: req.session.user
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -361,7 +417,8 @@ module.exports = {
         alert,
         itemId: itemId,
         features,
-        activities
+        activities,
+        userSession: req.session.user
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -447,8 +504,8 @@ module.exports = {
     }
   },
 
-   // end point detail activity
-   addActivityItem: async (req, res) => {
+  // end point detail activity
+  addActivityItem: async (req, res) => {
     const { name, type, itemId } = req.body;
     try {
       if (!req.file) {
@@ -524,9 +581,20 @@ module.exports = {
     }
   },
 
-  viewBooking: (req, res) => {
-    res.render("admin/booking/view_booking.ejs", {
-      title: "Staycation | Booking",
-    });
+  viewBooking: async (req, res) => {
+    try {
+      const booking = await Booking.find()
+        .populate("memberId")
+        .populate("bankId");
+
+      console.log(booking);
+      res.render("admin/booking/view_booking.ejs", {
+        title: "Staycation | Booking",
+        userSession: req.session.user
+      });
+    } catch (error) {
+      console.log(error);
+      res.redirect("/admin/dashboard");
+    }
   },
 };
