@@ -20,9 +20,9 @@ mongoose.connect("mongodb://127.0.0.1:27017/db_staycation", {
   useFindAndModify: false,
 });
 
+// Router 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-// admin router
 const adminRouter = require("./routes/admin");
 
 var app = express();
@@ -41,6 +41,7 @@ app.use(
     cookie: { maxAge: 600000 },
   })
 );
+
 // use flash
 app.use(flash());
 app.use(logger("dev"));
@@ -53,9 +54,9 @@ app.use(
   express.static(path.join(__dirname, "node_modules/startbootstrap-sb-admin-2"))
 );
 
+// connect Router
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-// use router admin
 app.use("/admin", adminRouter);
 
 // catch 404 and forward to error handler

@@ -1,22 +1,53 @@
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Data</h6>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table
+        class="table table-bordered"
+        id="dataTable"
+        width="100%"
+        cellspacing="0"
+      >
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Name Member</th>
+            <th>Name Bank</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% booking.forEach((booking, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td>
+              <%= booking.bookingStartDate.toLocaleString().split(',')[0] %> -
+              <%= booking.bookingEndDate.toLocaleString().split(',')[0] %>
+            </td>
+            <td><%= booking.itemId.title %></td>
+            <td>
+              <%= booking.memberId.firstName %> <%= booking.memberId.lastName %>
+            </td>
+            <td><%= booking.bankId.namebank %></td>
+            <td><%= booking.payments.status %></td>
+            <td>
+              <a
+                href="/admin/booking/<%= booking.id %>"
+                class="btn btn-primary btn-circle btn-sm"
+                data-id="<%= booking.id %>"
+              >
+                <i class="fas fa-eye"></i>
+              </a>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
     </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Date</th>
-                        <th>Title</th>
-                        <th>Name Member</th>
-                        <th>Name Bank</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-    </div>
+  </div>
 </div>
