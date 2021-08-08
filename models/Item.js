@@ -22,6 +22,14 @@ const itemSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  unit: {
+    type: String,
+    default: 'night',
+  },
+  sumBooking: {
+    type: Number,
+    default: 0,
+  },
   description: {
     type: String,
     required: true,

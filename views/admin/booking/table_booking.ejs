@@ -13,10 +13,10 @@
         <thead>
           <tr>
             <th>No.</th>
+            <th>Invoice</th>
             <th>Date</th>
             <th>Title</th>
             <th>Name Member</th>
-            <th>Name Bank</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -25,6 +25,7 @@
           <% booking.forEach((booking, index) => { %>
           <tr>
             <td><%= index + 1 %></td>
+            <td>#<%= booking.invoice %></td>
             <td>
               <%= booking.bookingStartDate.toLocaleString().split(',')[0] %> -
               <%= booking.bookingEndDate.toLocaleString().split(',')[0] %>
@@ -33,7 +34,6 @@
             <td>
               <%= booking.memberId.firstName %> <%= booking.memberId.lastName %>
             </td>
-            <td><%= booking.bankId.namebank %></td>
             <td><%= booking.payments.status %></td>
             <td>
               <a
