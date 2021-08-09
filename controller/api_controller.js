@@ -82,6 +82,10 @@ module.exports = {
         .populate({
           path: "featureId",
           select: "name quantity imageUrl",
+        })
+        .populate({
+          path: "imageId",
+          select: "imageUrl",
         });
       const bank = await Bank.find();
       const testimonial = {
