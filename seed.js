@@ -3,7 +3,7 @@ var mongoose = require("mongoose");
 
 // Connect to MongoDB via Mongoose
 seeder.connect(
-  "mongodb://127.0.0.1:27017/db_staycation",
+  "mongodb+srv://fadhilansyah25:sholawat5x@cluster0.1ssqo.mongodb.net/db_staycation?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -1101,9 +1101,9 @@ var data = [
         },
         total: 12,
         payments: {
-          proofPayment: "images/bukti.jpeg",
+          proofPayment: "images/bukti-bayar.jpeg",
           bankFrom: "BCA",
-          status: "Proses",
+          status: "Process",
           accountHolder: "ang",
         },
       },
@@ -1121,9 +1121,9 @@ var data = [
         },
         total: 12,
         payments: {
-          proofPayment: "images/bukti.jpeg",
+          proofPayment: "images/bukti-bayar.jpeg",
           bankFrom: "BCA",
-          status: "Proses",
+          status: "Process",
           accountHolder: "ang",
         },
       },

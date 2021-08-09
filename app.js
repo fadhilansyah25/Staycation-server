@@ -13,14 +13,17 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 
 // connect mongoose
-mongoose.connect("mongodb://127.0.0.1:27017/db_staycation", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
+mongoose.connect(
+  "mongodb+srv://fadhilansyah25:sholawat5x@cluster0.1ssqo.mongodb.net/db_staycation?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  }
+);
 
-// Router 
+// Router
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const adminRouter = require("./routes/admin");
