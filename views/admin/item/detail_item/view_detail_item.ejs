@@ -83,13 +83,13 @@
     $(".name-feature").val(name);
     $(".quantity").val(quantity);
     $(".save-edit-feature").val("edit");
-    $("#form-feature").attr('action', 'http://localhost:3000/admin/item/feature/edit?_method=PUT');
+    $("#form-feature").attr('action', 'https://staycation-server-fadil.herokuapp.com/admin/item/feature/edit?_method=PUT');
   });
 
   $(".reset-feature").on("click", function () {
     $(".save-edit-feature").val("Save");
     $(".featureId").val("");
-    $("#form-feature").attr('action', 'http://localhost:3000/admin/item/feature/add');
+    $("#form-feature").attr('action', 'https://staycation-server-fadil.herokuapp.com/admin/item/feature/add');
   });
 
   $("#dataTableActivity").on("click", ".button-update-activity", function () {
@@ -100,13 +100,13 @@
     $(".name-activity").val(name);
     $(".type").val(type);
     $(".save-edit-activity").val("edit");
-    $("#form-activity").attr('action', 'http://localhost:3000/admin/item/activity/edit?_method=PUT');
+    $("#form-activity").attr('action', 'https://staycation-server-fadil.herokuapp.com/admin/item/activity/edit?_method=PUT');
   });
 
   $(".reset-activity").on("click", function () {
     $(".save-edit-activity").val("Save");
     $(".activityId").val("");
-    $("#form-activity").attr('action', 'http://localhost:3000/admin/item/activity/add');
+    $("#form-activity").attr('action', 'https://staycation-server-fadil.herokuapp.com/admin/item/activity/add');
   });
 </script>
 <script>
