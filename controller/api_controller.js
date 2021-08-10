@@ -148,8 +148,9 @@ module.exports = {
       item.sumBooking += 1;
       await item.save();
 
-      let total = item.price * duration;
-      let tax = total * 0.1;
+      let subtotal = item.price * duration;
+      let tax = subtotal * 0.1;
+      let total = subtotal + tax;
 
       const invoice = Math.floor(1000000 + Math.random() * 9000000);
 
@@ -170,7 +171,7 @@ module.exports = {
           price: item.price,
           duration: duration,
         },
-        total: (total = +tax),
+        total: total,
         memberId: member._id,
         payments: {
           proofPayment: `images/${req.file.filename}`,

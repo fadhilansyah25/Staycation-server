@@ -11,6 +11,8 @@ const methodOverride = require("method-override");
 const session = require("express-session");
 // import mongoose
 const mongoose = require("mongoose");
+// import cors
+const cors = require("cors");
 
 // connect mongoose
 mongoose.connect(
@@ -57,6 +59,9 @@ app.use(
   "/sb-admin-2",
   express.static(path.join(__dirname, "node_modules/startbootstrap-sb-admin-2"))
 );
+
+// use cors
+app.use(cors());
 
 // connect Router
 app.use("/", indexRouter);
