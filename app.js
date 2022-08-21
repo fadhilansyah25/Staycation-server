@@ -13,10 +13,11 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 // import cors
 const cors = require("cors");
+const connectionMongoDB = process.env.MONGODBCONNECTION
 
 // connect mongoose
 mongoose.connect(
-  "mongodb+srv://fadhilansyah25:sholawat5x@cluster0.1ssqo.mongodb.net/db_staycation?retryWrites=true&w=majority",
+  connectionMongoDB,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
